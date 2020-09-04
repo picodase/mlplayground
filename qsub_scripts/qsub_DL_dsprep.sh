@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Give the job a name
-#$ -N ML_model
+#$ -N DL_dsprep
 
 # set the shell
 #$ -S /bin/sh
@@ -42,7 +42,7 @@ conda activate ML       # if already setup, no need to run functions below inter
 #conda install -c fastai -c pytorch -c anaconda fastai gh anaconda       # fastai/pytorch
 #conda install -c rdkit rdkit 
 
-
+python tranche2pngs.py      # convert tranches to pngs 
 
 conda deactivate ML     # deactivate
 
