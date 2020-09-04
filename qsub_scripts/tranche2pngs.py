@@ -6,11 +6,20 @@ from rdkit.Chem.rdmolfiles import SmilesMolSupplier
 from pathlib import Path
 import os
 
+# make folder "data"
+os.mkdir("data")       # make a dir to hold each object
+
+# cd to that folder
+os.chdir("data")
+
+# Download dataset after selecting a tranche from ZINC15
+bash ZINC-downloader-2D-smi.wget
+
 # Convert dataset
 
 ## Convert smiles to images
 # SOURCE
-paths = Path('/home/jacobnorth/Documents/GitHub/mdcode/ml_models/data/ml_2020_09_03_09_50_00').glob('**/*.smi')
+paths = Path('/home/other/northj/GitHub/mlplayground/qsub_scripts/').glob('**/*.smi')
 
 attempt = 1
 

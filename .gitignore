@@ -20,4 +20,7 @@
 *.pdb
 *.pdf
 ml_models/data/*
-data/*
+*/data/*
+*.png
+*.smi
+*.wget
