@@ -34,15 +34,17 @@ module load python/anaconda3-5.0.0.1    # load anaconda
 
 ############################################<RUN COMMANDS>############################################
 
-# ACTIVATE CONDA ENV
+# INIT CONDA
+conda init bash
 
+# ACTIVATE CONDA ENV
 conda activate ML       # if already setup, no need to run functions below interactively
 
 # INSTALL CONDA PKGS, WILL SKIP IF ALREADY THERE
 #conda install -c fastai -c pytorch -c anaconda fastai gh anaconda       # fastai/pytorch
 #conda install -c rdkit rdkit 
 
-python mdlrun_gan.py      # convert tranches to pngs 
+python mdlrun_gan.py      # run model
 
 conda deactivate ML     # deactivate
 

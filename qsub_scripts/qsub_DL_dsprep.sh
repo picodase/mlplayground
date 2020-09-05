@@ -34,6 +34,9 @@ module load python/anaconda3-5.0.0.1    # load anaconda
 
 ############################################<RUN COMMANDS>############################################
 
+# INIT CONDA
+conda init bash
+
 # ACTIVATE CONDA ENV
 
 conda activate ML       # if already setup, no need to run functions below interactively

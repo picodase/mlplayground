@@ -7,19 +7,19 @@ from pathlib import Path
 import os
 
 # make folder "data"
-os.mkdir("data")       # make a dir to hold each object
+#os.mkdir("data")       # make a dir to hold each object
 
 # cd to that folder
-os.chdir("data")
+#os.chdir("data")
 
 # Download dataset after selecting a tranche from ZINC15
-bash ZINC-downloader-2D-smi.wget
+#bash ZINC-downloader-2D-smi.wget
 
 # Convert dataset
 
 ## Convert smiles to images
 # SOURCE
-paths = Path('/home/other/northj/GitHub/mlplayground/qsub_scripts/').glob('**/*.smi')
+paths = Path('/home/other/northj/GitHub/mlplayground/qsub_scripts/data').glob('**/*.smi')
 
 attempt = 1
 
