@@ -34,8 +34,11 @@ module load python/anaconda3-5.0.0.1    # load anaconda
 
 ############################################<RUN COMMANDS>############################################
 
+# prepare shell: https://stackoverflow.com/questions/55507519/python-activate-conda-env-through-shell-script
+eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+
 # INIT CONDA
-conda init bash
+#conda init bash
 
 # ACTIVATE CONDA ENV
 
@@ -45,9 +48,17 @@ conda activate ML       # if already setup, no need to run functions below inter
 #conda install -c fastai -c pytorch -c anaconda fastai gh anaconda       # fastai/pytorch
 #conda install -c rdkit rdkit 
 
+# make data directory, cd to it
+mkdir data
+cd data
+mv ../ZINC-downloader-2D-smi.wget .
+
+# download dataset
+bash ZINC-downloader-2D-smi.wget
+
 python tranche2pngs.py      # convert tranches to pngs 
 
-conda deactivate ML     # deactivate
+conda deactivate     # deactivate
 
 ############################################</RUN COMMANDS>###########################################
 

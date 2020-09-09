@@ -5,7 +5,7 @@
 # imports
 from fastai.basics import *
 from fastai.vision.all import *
-from nbdev.showdoc import *
+#from nbdev.showdoc import *
 
 #default_exp vision.gan
 #default_cls_lvl 3
@@ -13,7 +13,7 @@ from nbdev.showdoc import *
 # ## Prepare dataset
 
 #path = untar_data(URLs.LSUN_BEDROOMS)
-path = "big_ds/"
+path = "data/drw_attempt1/"
 
 # # GAN
 # ## Wrapping the modules
@@ -301,27 +301,20 @@ class GANDiscriminativeLR(Callback):
         if not self.learn.gan_trainer.gen_mode: self.learn.opt.set_hyper('lr', self.learn.opt.hypers[0]['lr']/self.mult_lr)
 
 # ## GAN data
-
  
 #export
 class InvisibleTensor(TensorBase):
     def show(self, ctx=None, **kwargs): return ctx
-
-
  
 #export
 def generate_noise(fn, size=100): return cast(torch.randn(size), InvisibleTensor)
 
-
- 
 #export
 @typedispatch
 def show_batch(x:InvisibleTensor, y:TensorImage, samples, ctxs=None, max_n=10, nrows=None, ncols=None, figsize=None, **kwargs):
     if ctxs is None: ctxs = get_grid(min(len(samples), max_n), nrows=nrows, ncols=ncols, figsize=figsize)
     ctxs = show_batch[object](x, y, samples, ctxs=ctxs, max_n=max_n, **kwargs)
     return ctxs
-
-
  
 #export
 @typedispatch
@@ -329,8 +322,6 @@ def show_results(x:InvisibleTensor, y:TensorImage, samples, outs, ctxs=None, max
     if ctxs is None: ctxs = get_grid(min(len(samples), max_n), nrows=nrows, ncols=ncols, add_vert=1, figsize=figsize)
     ctxs = [b.show(ctx=c, **kwargs) for b,c,_ in zip(outs.itemgot(0),ctxs,range(max_n))]
     return ctxs
-
-
  
 bs = 128
 size = 128
@@ -343,7 +334,7 @@ dblock = DataBlock(blocks = (TransformBlock, ImageBlock),
                    batch_tfms = Normalize.from_stats(torch.tensor([0.5,0.5,0.5]), torch.tensor([0.5,0.5,0.5])))
 
 dls = dblock.dataloaders(path, path=path, bs=bs) 
-dls.show_batch(max_n=16)
+#dls.show_batch(max_n=16)
 
 # ## GAN Learner
 
@@ -395,16 +386,12 @@ GANLearner.from_learners = delegates(to=GANLearner.__init__)(GANLearner.from_lea
 GANLearner.wgan = delegates(to=GANLearner.__init__)(GANLearner.wgan)
 
 
- 
 from fastai.callback.all import *
 
-
- 
 generator = basic_generator(64, n_channels=3, n_extra_layers=1)
 critic    = basic_critic   (64, n_channels=3, n_extra_layers=1, act_cls=partial(nn.LeakyReLU, negative_slope=0.2))
 
 
- 
 learn = GANLearner.wgan(dls, generator, critic, opt_func = RMSProp)
 
 learn.recorder.train_metrics=True
@@ -412,7 +399,9 @@ learn.recorder.valid_metrics=False
  
 learn.fit(1, 2e-4, wd=0.)
 
-learn.show_results(max_n=9, ds_idx=0)
+#learn.show_results(max_n=9, ds_idx=0)
+
+learn.save("ganlearner")
 
 # ## Export -
 
