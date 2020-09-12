@@ -3,6 +3,10 @@
 # %%
 from IPython import get_ipython
 
+# %%
+# set data directory
+data_dir = "/home/other/northj/datasets/dataset_2020_09_07_chemimages"
+
 # %% [markdown]
 # ##### Copyright 2019 The TensorFlow Authors.
 
@@ -71,11 +75,11 @@ tf.__version__
 
 
 # %%
-# To generate GIFs
 #get_ipython().system('pip install -q imageio')
 #get_ipython().system('pip install -q git+https://github.com/tensorflow/docs')
 
 #commented out, was giving errors
+
 
 # %%
 import glob
@@ -96,12 +100,22 @@ from IPython import display
 
 # %%
 (train_images, train_labels), (_, _) = tf.keras.datasets.mnist.load_data()
+train_images = tf.keras.utils.
 
 
 # %%
-train_images = train_images.reshape(train_images.shape[0], 28, 28, 1).astype('float32')
-train_images = (train_images - 127.5) / 127.5 # Normalize the images to [-1, 1]
+#train_images = train_images.reshape(train_images.shape[0], 28, 28, 1).astype('float32')
+#train_images = (train_images - 127.5) / 127.5 # Normalize the images to [-1, 1]
 
+train_images = tf.keras.preprocessing.image_dataset_from_directory(
+  data_dir,
+  validation_split=0.2,
+  subset="training",
+  seed=123,
+  image_size=(img_height, img_width),
+  batch_size=batch_size)
+
+train_images = (train_images - 127.5) / 127.5 # Normalize the images to [-1, 1]
 
 # %%
 BUFFER_SIZE = 60000
