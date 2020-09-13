@@ -5,7 +5,14 @@ from IPython import get_ipython
 
 # %%
 # set data directory
-data_dir = "/home/other/northj/datasets/dataset_2020_09_07_chemimages"
+data_dir = "/home/other/northj/datasets/dataset_2020_09_07_chemimages/"
+
+# set image dims
+img_height = 128
+img_width = 128
+
+# set batch size
+batch_size = 64
 
 # %% [markdown]
 # ##### Copyright 2019 The TensorFlow Authors.
@@ -99,15 +106,13 @@ from IPython import display
 # You will use the MNIST dataset to train the generator and the discriminator. The generator will generate handwritten digits resembling the MNIST data.
 
 # %%
-(train_images, train_labels), (_, _) = tf.keras.datasets.mnist.load_data()
-train_images = tf.keras.utils.
-
+#(train_images, train_labels), (_, _) = tf.keras.datasets.mnist.load_data()
 
 # %%
 #train_images = train_images.reshape(train_images.shape[0], 28, 28, 1).astype('float32')
 #train_images = (train_images - 127.5) / 127.5 # Normalize the images to [-1, 1]
 
-train_images = tf.keras.preprocessing.image_dataset_from_directory(
+train_dataset = tf.keras.preprocessing.image_dataset_from_directory(
   data_dir,
   validation_split=0.2,
   subset="training",
@@ -115,7 +120,7 @@ train_images = tf.keras.preprocessing.image_dataset_from_directory(
   image_size=(img_height, img_width),
   batch_size=batch_size)
 
-train_images = (train_images - 127.5) / 127.5 # Normalize the images to [-1, 1]
+#train_images = (train_images - 127.5) / 127.5 # Normalize the images to [-1, 1]
 
 # %%
 BUFFER_SIZE = 60000
@@ -124,7 +129,7 @@ BATCH_SIZE = 256
 
 # %%
 # Batch and shuffle the data
-train_dataset = tf.data.Dataset.from_tensor_slices(train_images).shuffle(BUFFER_SIZE).batch(BATCH_SIZE)
+#train_dataset = tf.data.Dataset.from_tensor_slices(train_images).shuffle(BUFFER_SIZE).batch(BATCH_SIZE)
 
 # %% [markdown]
 # ## Create the models
@@ -255,7 +260,7 @@ checkpoint = tf.train.Checkpoint(generator_optimizer=generator_optimizer,
 # 
 
 # %%
-EPOCHS = 50
+EPOCHS = 1
 noise_dim = 100
 num_examples_to_generate = 16
 

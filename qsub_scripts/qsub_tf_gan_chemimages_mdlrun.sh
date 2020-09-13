@@ -49,7 +49,7 @@ conda activate TF       # if already setup, no need to run functions below inter
 #conda install -c fastai -c pytorch -c anaconda fastai gh anaconda       # fastai/pytorch
 #conda install -c rdkit rdkit 
 
-python tf_dcgan_mnist.py      # run model
+python tf_dcgan_chemimages.py      # run model
 
 conda deactivate     # deactivate
 
