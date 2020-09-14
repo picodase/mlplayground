@@ -1,5 +1,3 @@
-# To add a new cell, type '# %%'
-# To add a new markdown cell, type '# %% [markdown]'
 # %%
 from IPython import get_ipython
 
@@ -7,88 +5,16 @@ from IPython import get_ipython
 # set data directory
 data_dir = "/home/other/northj/datasets/dataset_2020_09_07_chemimages/"
 
-# set image dims
+# %% [markdown]
+# Define some parameters for the loader:
 img_height = 128
 img_width = 128
-
-# set batch size
 batch_size = 64
 
 # %% [markdown]
-# ##### Copyright 2019 The TensorFlow Authors.
-
-# %%
-#@title Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# https://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-# %% [markdown]
-# # Deep Convolutional Generative Adversarial Network
-# %% [markdown]
-# <table class="tfo-notebook-buttons" align="left">
-#   <td>
-#     <a target="_blank" href="https://www.tensorflow.org/tutorials/generative/dcgan">
-#     <img src="https://www.tensorflow.org/images/tf_logo_32px.png" />
-#     View on TensorFlow.org</a>
-#   </td>
-#   <td>
-#     <a target="_blank" href="https://colab.research.google.com/github/tensorflow/docs/blob/master/site/en/tutorials/generative/dcgan.ipynb">
-#     <img src="https://www.tensorflow.org/images/colab_logo_32px.png" />
-#     Run in Google Colab</a>
-#   </td>
-#   <td>
-#     <a target="_blank" href="https://github.com/tensorflow/docs/blob/master/site/en/tutorials/generative/dcgan.ipynb">
-#     <img src="https://www.tensorflow.org/images/GitHub-Mark-32px.png" />
-#     View source on GitHub</a>
-#   </td>
-#   <td>
-#     <a href="https://storage.googleapis.com/tensorflow_docs/docs/site/en/tutorials/generative/dcgan.ipynb"><img src="https://www.tensorflow.org/images/download_logo_32px.png" />Download notebook</a>
-#   </td>
-# </table>
-# %% [markdown]
-# This tutorial demonstrates how to generate images of handwritten digits using a [Deep Convolutional Generative Adversarial Network](https://arxiv.org/pdf/1511.06434.pdf) (DCGAN). The code is written using the [Keras Sequential API](https://www.tensorflow.org/guide/keras) with a `tf.GradientTape` training loop.
-# %% [markdown]
-# ## What are GANs?
-# [Generative Adversarial Networks](https://arxiv.org/abs/1406.2661) (GANs) are one of the most interesting ideas in computer science today. Two models are trained simultaneously by an adversarial process. A *generator* ("the artist") learns to create images that look real, while a *discriminator* ("the art critic") learns to tell real images apart from fakes.
-# 
-# ![A diagram of a generator and discriminator](./images/gan1.png)
-# 
-# During training, the *generator* progressively becomes better at creating images that look real, while the *discriminator* becomes better at telling them apart. The process reaches equilibrium when the *discriminator* can no longer distinguish real images from fakes.
-# 
-# ![A second diagram of a generator and discriminator](./images/gan2.png)
-# 
-# This notebook demonstrates this process on the MNIST dataset. The following animation shows a series of images produced by the *generator* as it was trained for 50 epochs. The images begin as random noise, and increasingly resemble hand written digits over time.
-# 
-# ![sample output](https://tensorflow.org/images/gan/dcgan.gif)
-# 
-# To learn more about GANs, we recommend MIT's [Intro to Deep Learning](http://introtodeeplearning.com/) course.
-# %% [markdown]
 # ### Setup
 
-# %%
 import tensorflow as tf
-
-
-# %%
-tf.__version__
-
-
-# %%
-#get_ipython().system('pip install -q imageio')
-#get_ipython().system('pip install -q git+https://github.com/tensorflow/docs')
-
-#commented out, was giving errors
-
-
-# %%
 import glob
 import imageio
 import matplotlib.pyplot as plt
@@ -97,22 +23,38 @@ import os
 import PIL
 from tensorflow.keras import layers
 import time
+import pathlib
 
 from IPython import display
+tf.__version__
 
 # %% [markdown]
 # ### Load and prepare the dataset
-# 
-# You will use the MNIST dataset to train the generator and the discriminator. The generator will generate handwritten digits resembling the MNIST data.
+
+# %% [markdown]
+# Define some parameters for the loader:
+BUFFER_SIZE = 60000
+BATCH_SIZE = 256
+
+
+
+
+data_dir = pathlib.Path(data_dir)
 
 # %%
-#(train_images, train_labels), (_, _) = tf.keras.datasets.mnist.load_data()
+# count the number of images, specifically those that are .png files
+image_count = len(list(data_dir.glob('*/*.png')))
+print(image_count)
+
+# %% [markdown]
+# ### Create a dataset
+
+# %% [markdown]
+# It's good practice to use a validation split when developing your model. We will use 80% of the images for training, and 20% for validation.
 
 # %%
-#train_images = train_images.reshape(train_images.shape[0], 28, 28, 1).astype('float32')
-#train_images = (train_images - 127.5) / 127.5 # Normalize the images to [-1, 1]
-
-train_dataset = tf.keras.preprocessing.image_dataset_from_directory(
+# Load the training dataset
+train_ds = tf.keras.preprocessing.image_dataset_from_directory(
   data_dir,
   validation_split=0.2,
   subset="training",
@@ -120,12 +62,62 @@ train_dataset = tf.keras.preprocessing.image_dataset_from_directory(
   image_size=(img_height, img_width),
   batch_size=batch_size)
 
-#train_images = (train_images - 127.5) / 127.5 # Normalize the images to [-1, 1]
 
 # %%
-BUFFER_SIZE = 60000
-BATCH_SIZE = 256
+# Load the validation dataset
+val_ds = tf.keras.preprocessing.image_dataset_from_directory(
+  data_dir,
+  validation_split=0.2,
+  subset="validation",
+  seed=123,
+  image_size=(img_height, img_width),
+  batch_size=batch_size)
 
+# %%
+class_names = train_ds.class_names
+print(class_names)
+
+# %% [markdown]
+# ### Visualize the data
+# 
+# Here are the first 9 images from the training dataset.
+
+# %%
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(10, 10))
+for images, labels in train_ds.take(1):
+  for i in range(9):
+    ax = plt.subplot(3, 3, i + 1)
+    plt.imshow(images[i].numpy().astype("uint8"))
+    plt.title(class_names[labels[i]])
+    plt.axis("off")
+
+# %%
+for image_batch, labels_batch in train_ds:
+  print(image_batch.shape)
+  print(labels_batch.shape)
+  break
+
+# %%
+from tensorflow.keras import layers
+
+normalization_layer = tf.keras.layers.experimental.preprocessing.Rescaling(1./255)    # scale to 0-1
+
+# %%
+normalized_ds = train_ds.map(lambda x, y: (normalization_layer(x), y))
+image_batch, labels_batch = next(iter(normalized_ds))
+first_image = image_batch[0]
+# Notice the pixels values are now in `[0,1]`.
+print(np.min(first_image), np.max(first_image)) 
+
+# %% [markdown]
+# ### Configure the dataset for performance
+# %%
+AUTOTUNE = tf.data.experimental.AUTOTUNE
+
+train_ds = train_ds.cache().prefetch(buffer_size=AUTOTUNE)
+val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
 # %%
 # Batch and shuffle the data

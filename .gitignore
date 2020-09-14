@@ -24,3 +24,4 @@ ml_models/data/*
 *.png
 *.smi
 *.wget
+.vscode/settings.json
