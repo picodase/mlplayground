@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Give the job a name
-#$ -N tf_gan_mnist_DL_mdlrun
+#$ -N tf_gan_chemimg_rgb_DL_mdlrun
 
 # set the shell
 #$ -S /bin/sh
@@ -49,7 +49,7 @@ conda activate TF       # if already setup, no need to run functions below inter
 #conda install -c fastai -c pytorch -c anaconda fastai gh anaconda       # fastai/pytorch
 #conda install -c rdkit rdkit 
 
-python tf_dcgan_chemimages.py      # run model
+python tf_dcgan_2Dchemim_RGB.py      # run model
 
 conda deactivate     # deactivate
 

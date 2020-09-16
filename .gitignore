@@ -25,3 +25,4 @@ ml_models/data/*
 *.smi
 *.wget
 .vscode/settings.json
+qsub_scripts/training_checkpoints/*
