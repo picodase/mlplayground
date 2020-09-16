@@ -363,7 +363,8 @@ def generate_and_save_images(model, epoch, test_input):
         plt.axis('off')
 
     plt.savefig('image_at_epoch_{:04d}.png'.format(epoch))
-    plt.show()
+    #plt.show()     # commented out to prevent consumption of too much memory...    
+    #plt.close()    # try this out too, if above doesn't work??
 
 
 # %%

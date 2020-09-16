@@ -60,7 +60,7 @@ BUFFER_SIZE = 60000
 BATCH_SIZE = batch_size
 
 # training
-EPOCHS = 1000       # 1, 50, 1000? 
+EPOCHS = 500       # 1, 50, 1000? 500 seems appropriate for chemimg_gan, using initial testing
 noise_dim = 100
 num_examples_to_generate = 16
 
@@ -363,7 +363,8 @@ def generate_and_save_images(model, epoch, test_input):
         plt.axis('off')
 
     plt.savefig('image_at_epoch_{:04d}.png'.format(epoch))
-    plt.show()
+    #plt.show()     # commented out to prevent consumption of too much memory...    
+    #plt.close()    # try this out too, if above doesn't work??
 
 
 # %%
