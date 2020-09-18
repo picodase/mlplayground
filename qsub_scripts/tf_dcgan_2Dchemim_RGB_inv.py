@@ -209,7 +209,7 @@ val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
 def make_generator_model():
     model = tf.keras.Sequential()
     
-    #model.add(Invert())     # invert every image, for lower activation
+    model.add(Invert())     # invert every image, for lower activation
 
     model.add(layers.Dense(8*8*256, use_bias=False, input_shape=(100,)))
     
@@ -258,7 +258,7 @@ generator.summary()
 def make_discriminator_model():
     model = tf.keras.Sequential()
 
-    #model.add(Invert())     # invert every image, for lower activation
+    model.add(Invert())     # invert every image, for lower activation
 
     model.add(layers.Conv2D(3, (5, 5), strides=(1, 1), padding='same',
                                      input_shape=[128, 128, 3]))

@@ -51,6 +51,10 @@ conda activate TF       # if already setup, no need to run functions below inter
 
 python tf_dcgan_2Dchemim_grayscale.py      # run model
 
+mkdir data
+
+mv image_at_epoch_* job_output.* training_checkpoints/ dcgan.gif data
+
 conda deactivate     # deactivate
 
 ############################################</RUN COMMANDS>###########################################
