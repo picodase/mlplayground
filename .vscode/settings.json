@@ -1,4 +1,4 @@
 {
-    "python.pythonPath": "/home/jacobnorth/miniconda3/envs/TF/bin/python",
-    "python.dataScience.jupyterServerURI": "local"
+    "python.dataScience.jupyterServerURI": "local",
+    "python.pythonPath": "/home/jacobnorth/miniconda3/envs/quantum/bin/python"
 }
