@@ -26,3 +26,4 @@ ml_models/data/*
 *.wget
 .vscode/settings.json
 qsub_scripts/training_checkpoints/*
+feature_engineering/JLN_1_22D
