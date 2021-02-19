@@ -6,7 +6,6 @@ IMPORTS
 
 import Bio.PDB
 
-
 '''
 FUNCTIONS
 '''

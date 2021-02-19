@@ -165,13 +165,19 @@ def printPHDiagram(data: np.array, id:str):
     '''
     Bundles the functions used to calculate a PH diagram from a dataset.
     '''
-    diagrams = ripser(data)['dgms']
+    try:
+        diagrams = ripser(data)['dgms']
+    except:
+        return
+
+    plt.figure()
     plot_diagrams(diagrams,title="Persistence diagram, #"+id , show=False)
     plt.savefig("persistent_homology_"+id+".png")
 
-    data = pd.DataFrame(plt.gca().get_lines().get_xydata())
-    data.to_csv("ph_"+id+".csv")
-
+    '''
+    #data = pd.DataFrame(plt.gca().get_lines().get_xydata())
+    #data.to_csv("ph_"+id+".csv")
+    '''
     return
 
 # calculate a mapper visualization

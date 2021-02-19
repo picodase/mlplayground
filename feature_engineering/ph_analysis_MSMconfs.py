@@ -3,8 +3,9 @@
 IMPORTS
 '''
 import pdbutils
-import elemSpecificPH
+import structuralPH
 import scipy
+import numpy as np
 from ripser import ripser
 from persim import plot_diagrams
 import matplotlib.pyplot as plt
